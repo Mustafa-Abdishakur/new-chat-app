@@ -1,0 +1,22 @@
+.signIn {
+    width:40vw;
+    min-height:30vh;
+    border:1px solid #eee;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+    transform:translateY(25vh);
+    box-shadow: 0 0 10px rgb(211, 210, 210);
+}
+.signIn h1{
+    font-weight: normal;
+    margin-bottom:-5px;
+}
+.signIn button {
+    background-color: #fff;
+    border:2px solid rgb(180, 178, 178);
+    padding:5px 15px;
+    font-size:17px;
+}
