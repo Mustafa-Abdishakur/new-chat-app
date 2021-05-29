@@ -13,10 +13,17 @@
 .signIn h1{
     font-weight: normal;
     margin-bottom:-5px;
+    color:rgb(189, 8, 8);
 }
 .signIn button {
     background-color: #fff;
     border:2px solid rgb(180, 178, 178);
     padding:5px 15px;
     font-size:17px;
+    margin-top:15px;
+    transition:all 0.2s;
+}
+button:hover {
+    cursor:pointer;
+    transform: scale(1.05);
 }
