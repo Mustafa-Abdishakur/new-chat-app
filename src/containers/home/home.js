@@ -14,7 +14,16 @@ const home = () => {
             <div className={classes.ChatContainer}>
                 <div className={classes.textContainer}>
                     <div className={classes.ImgContainer}>
-                        <img src={image} />
+                        <img src={image} alt="profile"/>
+                    </div>
+                    <div className={classes.text}>
+                        <span>Mustafa Abdishakur</span>
+                        <span>hello world</span>
+                    </div>
+                </div>
+                  <div className={classes.textContainer}>
+                    <div className={classes.ImgContainer}>
+                        <img src={image} alt="profile"/>
                     </div>
                     <div className={classes.text}>
                         <span>Mustafa Abdishakur</span>

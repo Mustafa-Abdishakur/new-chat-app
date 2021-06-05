@@ -1,8 +1,12 @@
 import './App.css';
-import SignIn from './containers/signIn/signIn'; 
-import Home from './containers/home/home';
+// import firebase from "firebase/app";
+// import "firebase/auth";
+import SignIn from './containers/signIn/signIn';
+// import Home from './containers/home/home';
+import {firebaseInit} from './firebase';
 
 function App() {
+  firebaseInit();
   return (
     <div className="App">
       <SignIn />
