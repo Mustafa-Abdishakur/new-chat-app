@@ -1,12 +1,22 @@
 import React from 'react';
 import image from '../../img/blank-profile.png';
 import classes from './home.module.css';
+import firebase from "firebase/app";
+import { Redirect } from 'react-router-dom';
 
+const signOut = () => {
+    firebase.auth().signOut().then(() => {
+        console.log('sign out successfully');
+        <Redirect to="/" />
+      }).catch((error) => {
+        alert('oops, something happened. I will redirect you to the sign in page');
+      });
+}
 const home = () => {
     return (
         <div className={classes.HomeContainer}>
             <div className={classes.SignOutBtn}>
-                <button>Sign out</button>
+                <button onClick={signOut}>Sign out</button>
             </div>
             <div className="header-container">
                 <h1>Welcome to chat App</h1>
