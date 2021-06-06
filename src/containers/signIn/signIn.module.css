@@ -9,6 +9,7 @@
     margin:auto;
     transform:translateY(25vh);
     box-shadow: 0 0 10px rgb(211, 210, 210);
+    padding:20px;
 }
 .signIn h1{
     font-weight: normal;
@@ -20,10 +21,12 @@
     border:2px solid rgb(180, 178, 178);
     padding:5px 15px;
     font-size:17px;
-    margin-top:15px;
     transition:all 0.2s;
 }
 button:hover {
     cursor:pointer;
     transform: scale(1.05);
+}
+.signIn div {
+    width:100%;
 }

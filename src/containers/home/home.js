@@ -5,7 +5,6 @@ import firebase from "firebase/app";
 
 const signOut = () => {
     firebase.auth().signOut().then(() => {
-        console.log('sign out successfully');
         window.location = '/';
     }).catch((error) => {
         alert('oops, something happened. I will redirect you to the sign in page');

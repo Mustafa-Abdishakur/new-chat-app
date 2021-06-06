@@ -10,11 +10,11 @@ const signIn = () => {
         <div className={classes.signIn}>
             <h1>Welcome to my chat app</h1>
             <p>Join and chat away with the rest of the world</p>
-            <div className="btns-container">
+           {/*  <div className="btns-container">
                 <button onClick={redirect}>
                     Sign in with google
                 </button>
-            </div>
+            </div> */}
             <div id="firebaseui-auth-container"></div>
             <div id="loader">Loading...</div>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
