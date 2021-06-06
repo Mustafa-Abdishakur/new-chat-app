@@ -2,15 +2,14 @@ import React from 'react';
 import image from '../../img/blank-profile.png';
 import classes from './home.module.css';
 import firebase from "firebase/app";
-import { Redirect } from 'react-router-dom';
 
 const signOut = () => {
     firebase.auth().signOut().then(() => {
         console.log('sign out successfully');
-        <Redirect to="/" />
-      }).catch((error) => {
+        window.location = '/';
+    }).catch((error) => {
         alert('oops, something happened. I will redirect you to the sign in page');
-      });
+    });
 }
 const home = () => {
     return (
@@ -24,16 +23,16 @@ const home = () => {
             <div className={classes.ChatContainer}>
                 <div className={classes.textContainer}>
                     <div className={classes.ImgContainer}>
-                        <img src={image} alt="profile"/>
+                        <img src={image} alt="profile" />
                     </div>
                     <div className={classes.text}>
                         <span>Mustafa Abdishakur</span>
                         <span>hello world</span>
                     </div>
                 </div>
-                  <div className={classes.textContainer}>
+                <div className={classes.textContainer}>
                     <div className={classes.ImgContainer}>
-                        <img src={image} alt="profile"/>
+                        <img src={image} alt="profile" />
                     </div>
                     <div className={classes.text}>
                         <span>Mustafa Abdishakur</span>
