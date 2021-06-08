@@ -1,6 +1,6 @@
 import React from 'react';
 import image from '../../img/blank-profile.png';
-import classes from './home.module.css';
+import classes from './chatPage.module.css';
 import firebase from "firebase/app";
 
 const signOut = () => {
@@ -10,7 +10,7 @@ const signOut = () => {
         alert('oops, something happened. I will redirect you to the sign in page');
     });
 }
-const home = () => {
+const chatPage = () => {
     return (
         <div className={classes.HomeContainer}>
             <div className={classes.SignOutBtn}>
@@ -46,4 +46,4 @@ const home = () => {
     )
 }
 
-export default home;
+export default chatPage;
