@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import image from '../../img/blank-profile.png';
 import classes from './chatPage.module.css';
 import firebase from "firebase/app";
 
-const signOut = () => {
-    firebase.auth().signOut().then(() => {
-        window.location = '/';
-    }).catch((error) => {
-        alert('oops, something happened. I will redirect you to the sign in page');
-    });
-}
-const chatPage = () => {
+const ChatPage = () => {
+
+    const [userName, setUserName] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
+    const [userImg, setUserImg] = useState(null);
+
+    useEffect(() => {
+        setUserName(localStorage.getItem('name'));
+        setUserEmail(localStorage.getItem('email'));
+        setUserImg(localStorage.getItem('profileImg'));
+    }, [userName, userEmail, userImg]);
+
+    const signOut = () => {
+        firebase.auth().signOut().then(() => {
+            setUserName(null);
+            setUserEmail(null);
+            setUserImg(null);
+            localStorage.clear();
+            window.location = '/';
+        }).catch((error) => {
+            alert('oops, something happened. I will redirect you to the sign in page');
+        });
+    }
     return (
         <div className={classes.HomeContainer}>
             <div className={classes.SignOutBtn}>
@@ -44,6 +59,6 @@ const chatPage = () => {
             </div>
         </div>
     )
-}
 
-export default chatPage;
+}
+export default ChatPage;

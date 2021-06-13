@@ -1,11 +1,11 @@
 import './App.css';
 import SignIn from './containers/signIn/signIn';
 import chatPage from './containers/chatPage/chatPage';
-import { firebaseInit } from './firebase';
+import { FirebaseInit } from './firebase';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 function App() {
-  firebaseInit();
+  FirebaseInit();
   return (
     <BrowserRouter>
       <div className="App">
