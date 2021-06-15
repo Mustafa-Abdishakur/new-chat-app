@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import image from '../../img/blank-profile.png';
 import classes from './chatPage.module.css';
 import firebase from "firebase/app";
@@ -8,12 +8,14 @@ const ChatPage = () => {
     const [userName, setUserName] = useState(null);
     const [userEmail, setUserEmail] = useState(null);
     const [userImg, setUserImg] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         setUserName(localStorage.getItem('name'));
         setUserEmail(localStorage.getItem('email'));
         setUserImg(localStorage.getItem('profileImg'));
-    }, [userName, userEmail, userImg]);
+        setUserId(localStorage.getItem('uid'));
+    }, [userName, userEmail, userImg, userId]);
 
     const signOut = () => {
         firebase.auth().signOut().then(() => {
@@ -25,6 +27,23 @@ const ChatPage = () => {
         }).catch((error) => {
             alert('oops, something happened. I will redirect you to the sign in page');
         });
+    }
+    const chatInputHandler = event => {
+        const message = event.target.value;
+        if (event.keyCode === 13) {
+            const messageInfo = {
+                name: userName,
+                message: message,
+                profilePic: userImg,
+                userId: userId
+            }
+            let newMessage = {};
+            var newPostKey = firebase.database().ref().child('chatMessages').push().key;
+            newMessage['/chatMessages/' + newPostKey] = messageInfo;
+            firebase.database().ref().update(newMessage);
+            event.target.value = '';
+
+        }
     }
     return (
         <div className={classes.HomeContainer}>
@@ -55,7 +74,7 @@ const ChatPage = () => {
                 </div>
             </div>
             <div className={classes.InputContainer}>
-                <input type="text" placeholder="type your message..." />
+                <input type="text" placeholder="type your message..." onKeyUp={chatInputHandler} />
             </div>
         </div>
     )

@@ -34,14 +34,7 @@ var uiConfig = {
   tosUrl: '',
   privacyPolicyUrl: ''
 };
-/* const setupUser = user => {
-  currentUser = {
-    name: user.displayName,
-    email: user.email,
-    profileImg: user.photoURL
-  };
-  console.log(currentUser)
-} */
+
 const FirebaseInit = () => {
 
   //initializing firebase
@@ -52,19 +45,21 @@ const FirebaseInit = () => {
     firebase.app();
     ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
   }
-  //inintializing authentication
+  //initializing authentication
   ui.start('#firebaseui-auth-container', uiConfig);
 
-  //inintializing database
+  // Get a reference to the database service
   database = firebase.database();
 
   //check if user is signed in or not
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.
+      console.log(user)
       localStorage.setItem('name', user.displayName);
       localStorage.setItem('email', user.email);
       localStorage.setItem('profileImg', user.photoURL);
+      localStorage.setItem('uid', user.uid);
       //redirect to chat page
       if (window.location.pathname === '/') {
         window.location = '/chatPage';
