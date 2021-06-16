@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/database';
-import React, {useState} from 'react';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAeNMxcJMDLX9MqsYJNx_uTe6awE0kO7gw",
@@ -55,7 +54,6 @@ const FirebaseInit = () => {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.
-      console.log(user)
       localStorage.setItem('name', user.displayName);
       localStorage.setItem('email', user.email);
       localStorage.setItem('profileImg', user.photoURL);

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import image from '../../img/blank-profile.png';
+import React, { useState, useEffect, useRef  } from 'react';
 import classes from './chatPage.module.css';
 import firebase from "firebase/app";
 
@@ -9,6 +8,8 @@ const ChatPage = () => {
     const [userEmail, setUserEmail] = useState(null);
     const [userImg, setUserImg] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [messagesList, setMessagesList] = useState({});
+
 
     useEffect(() => {
         setUserName(localStorage.getItem('name'));
@@ -16,6 +17,14 @@ const ChatPage = () => {
         setUserImg(localStorage.getItem('profileImg'));
         setUserId(localStorage.getItem('uid'));
     }, [userName, userEmail, userImg, userId]);
+
+    useEffect(() => {
+        var messagesRef = firebase.database().ref('chatMessages');
+        messagesRef.on('value', (snapshot) => {
+            setMessagesList(snapshot.val());
+            // messagesList = snapshot.val();
+        });
+    }, []);
 
     const signOut = () => {
         firebase.auth().signOut().then(() => {
@@ -45,33 +54,46 @@ const ChatPage = () => {
 
         }
     }
+    const messagesArr = [];
+    for (const message in messagesList) {
+        messagesArr.push(messagesList[message])
+    }
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+    useEffect(() => {
+        scrollToBottom()
+      }, [messagesArr]);
     return (
         <div className={classes.HomeContainer}>
             <div className={classes.SignOutBtn}>
                 <button onClick={signOut}>Sign out</button>
             </div>
-            <div className="header-container">
-                <h1>Welcome to chat App</h1>
-            </div>
-            <div className={classes.ChatContainer}>
-                <div className={classes.textContainer}>
-                    <div className={classes.ImgContainer}>
-                        <img src={image} alt="profile" />
-                    </div>
-                    <div className={classes.text}>
-                        <span>Mustafa Abdishakur</span>
-                        <span>hello world</span>
-                    </div>
+            <div className={classes.midContainer}>
+                <div className="header-container">
+                    <h1>Welcome to chat App</h1>
                 </div>
-                <div className={classes.textContainer}>
-                    <div className={classes.ImgContainer}>
-                        <img src={image} alt="profile" />
-                    </div>
-                    <div className={classes.text}>
-                        <span>Mustafa Abdishakur</span>
-                        <span>hello world</span>
-                    </div>
-                </div>
+                <div className={classes.mainChatContainer}>
+                    {messagesArr.map(message => {
+                        return (
+                            <div className={classes.ChatContainer}>
+                                <div className={classes.textContainer}>
+                                    <div className={classes.ImgContainer}>
+                                        <img src={message.profilePic} alt="profile" />
+                                    </div>
+                                    <div className={classes.text}>
+                                        <span>{message.name}</span>
+                                        <span>{message.message}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        )
+                    })}
+                    <div ref={messagesEndRef} />
+                </div>              
             </div>
             <div className={classes.InputContainer}>
                 <input type="text" placeholder="type your message..." onKeyUp={chatInputHandler} />
