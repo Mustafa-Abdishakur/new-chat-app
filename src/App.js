@@ -11,6 +11,7 @@ function App() {
       <div className="App">
         <Route exact path='/chatPage' component={chatPage} />
         <Route exact path='/' component={SignIn} />
+        <span className="reference">Built by <a href="https://www.mustafaabdishakur.com" target="_blank" rel="noreferrer">Mustafa Abdishakur</a></span>
       </div>
     </BrowserRouter>
 

@@ -12,8 +12,8 @@ const firebaseConfig = {
   databaseURL: "https://chat-application-65ba3-default-rtdb.firebaseio.com/"
 };
 var firebaseui = require('firebaseui');
-let ui, database;
-// let currentUser = null;
+let ui;
+/*let  database; */
 
 //authetication configration
 var uiConfig = {
@@ -28,7 +28,8 @@ var uiConfig = {
   signInFlow: 'popup',
   signInSuccessUrl: 'chat',
   signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
   ],
   tosUrl: '',
   privacyPolicyUrl: ''
@@ -48,7 +49,7 @@ const FirebaseInit = () => {
   ui.start('#firebaseui-auth-container', uiConfig);
 
   // Get a reference to the database service
-  database = firebase.database();
+  // database = firebase.database();
 
   //check if user is signed in or not
   firebase.auth().onAuthStateChanged(function (user) {
