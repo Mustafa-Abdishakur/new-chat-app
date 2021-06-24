@@ -1,0 +1,107 @@
+.mainContainer {
+    width:22%;
+    border:1px solid #eee;
+    min-width: 260px;
+}
+.groupsContainer {
+    overflow-y: scroll;
+
+}
+.infoContainer img:first-child{
+    border-radius: 50%;
+    width:50px;
+    margin-right:10px;
+}
+.infoContainer {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    background-color: rgb(243, 243, 243);
+    padding:15px;
+}
+.infoContainer .dropdown img{
+    width:30px;
+}
+.infoContainer span {
+    justify-self: left;
+    margin-left:-14px;
+    font-size:14px;
+}
+.dropdown {
+      justify-self: flex-end;
+  }
+  .dropdown:hover{
+    cursor: pointer;
+     }
+  .dropdownContent {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdownContent p {
+      padding:10px 5px;
+      top:0;
+      margin:0;
+      
+  }
+  .dropdownContent p:hover {
+    background-color:#3498db;
+    color:#fff;
+    cursor: pointer;
+  }
+  .viewSettings {
+    display: block !important;
+  }
+.infoContainer img:last-child:hover{
+    cursor: pointer;
+}
+
+.group img{
+    width:50px;
+    margin-right:10px;
+}
+.group {
+    display:flex;
+    align-items: center;
+    padding: 19px 12px;
+    border-bottom: 1px solid #eee;
+}
+.group:hover{
+    background-color: #3498db;
+    cursor:pointer;
+    color:#fff;
+}
+.group:hover span{
+    background-color: #3498db;
+    cursor:pointer;
+    color:#fff !important;
+}
+.groupInfoContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) ;
+    grid-template-rows: repeat(2, 1fr) ;
+    grid-template-areas: 
+    "area1 . area2"
+    "area3 area3 area3";
+}
+.groupInfoContainer span:nth-child(1) {
+    grid-area: area1;
+}
+.groupInfoContainer span:nth-child(2) {
+    text-align: end;
+    grid-area: area2;
+    color:grey;
+}
+.groupInfoContainer span:nth-child(3) {
+    grid-area: area3;
+    color:grey;
+    font-size:14px;
+    margin-top: 3px;
+}
+.groupInfoContainer{
+    width:100%;
+}

@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/database';
+import profilePic from './img/blank-profile.png';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAeNMxcJMDLX9MqsYJNx_uTe6awE0kO7gw",
@@ -48,17 +49,19 @@ const FirebaseInit = () => {
   //initializing authentication
   ui.start('#firebaseui-auth-container', uiConfig);
 
-  // Get a reference to the database service
-  // database = firebase.database();
-
   //check if user is signed in or not
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+      // console.log(user)
       // User is signed in.
-      localStorage.setItem('name', user.displayName);
+      //Note: change back displayName and photoURL and remove email log in production
+      //save message to local storage to used in chatPage.js
+      localStorage.setItem('name', user.displayName === null ? 'Test' : user.displayName);
       localStorage.setItem('email', user.email);
-      localStorage.setItem('profileImg', user.photoURL);
+      localStorage.setItem('profileImg', user.photoURL === null ? profilePic : user.photoURL);
       localStorage.setItem('uid', user.uid);
+
+
       //redirect to chat page
       if (window.location.pathname === '/') {
         window.location = '/chatPage';

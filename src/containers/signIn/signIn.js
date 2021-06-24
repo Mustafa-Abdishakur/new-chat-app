@@ -12,14 +12,8 @@ const signIn = () => {
             <div id="firebaseui-auth-container"></div>
             <div id="loader">Loading...</div>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-            <button onClick={testSignInHandler}>test account</button>
         </div>
     )
 }
-const testSignInHandler = () => {
-    const date = new Date();
-    const CurrentDate = date.getDate() + '/'+ (date.getMonth() + 1);
-    const currentTime = date.getHours() + ':' + date.getMinutes();
-    console.log(CurrentDate, currentTime);
-}
+
 export default signIn;

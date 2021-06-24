@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classes from './chatPage.module.css';
 import firebase from "firebase/app";
+import GroupsList from '../groupsList/groupsList';
+
 const ChatPage = () => {
 
     const [userName, setUserName] = useState(null);
@@ -17,27 +19,16 @@ const ChatPage = () => {
     }, [userName, userEmail, userImg, userId]);
 
     useEffect(() => {
-        var messagesRef = firebase.database().ref('chatMessages');
+        let messagesRef = firebase.database().ref('General Chat');
         messagesRef.on('value', (snapshot) => {
             setMessagesList(snapshot.val());
         });
     }, []);
 
-    const signOut = () => {
-        firebase.auth().signOut().then(() => {
-            setUserName(null);
-            setUserEmail(null);
-            setUserImg(null);
-            localStorage.clear();
-            window.location = '/';
-        }).catch((error) => {
-            alert('oops, something happened. I will redirect you to the sign in page');
-        });
-    }
     const chatInputHandler = event => {
         const message = event.target.value;
         if (event.keyCode === 13) {
-            const newPostKey = firebase.database().ref().child('chatMessages').push().key;
+            const newPostKey = firebase.database().ref().child('General Chat').push().key;
             const date = new Date();
             const currentDate = date.getDate() + '/' + (date.getMonth() + 1);
             const currentTime = date.getHours() + ':' + date.getMinutes();
@@ -48,10 +39,10 @@ const ChatPage = () => {
                 userId: userId,
                 key: newPostKey,
                 messageDate: currentDate,
-                messageTime:currentTime
+                messageTime: currentTime
             }
             let newMessage = {};
-            newMessage['/chatMessages/' + newPostKey] = messageInfo;
+            newMessage['General Chat/' + newPostKey] = messageInfo;
             firebase.database().ref().update(newMessage);
             event.target.value = '';
 
@@ -68,13 +59,17 @@ const ChatPage = () => {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     });
+    const userInfo = {
+        userName,
+        userEmail,
+        userImg,
+        userId,
+    }
     return (
         <div className={classes.HomeContainer}>
-            <div className={classes.SignOutBtn}>
-                <button onClick={signOut}>Sign out</button>
-            </div>
+            <GroupsList user={userInfo}/>
             <div className={classes.midContainer}>
-                <div className="header-container">
+                <div className={classes.headerContainer}>
                     <h1>Welcome to chat App</h1>
                 </div>
                 <div className={classes.mainChatContainer}>
@@ -99,10 +94,11 @@ const ChatPage = () => {
                     })}
                     <div ref={messagesEndRef} />
                 </div>
+                <div className={classes.InputContainer}>
+                    <input type="text" placeholder="type your message here..." onKeyUp={chatInputHandler} />
+                </div>
             </div>
-            <div className={classes.InputContainer}>
-                <input type="text" placeholder="type your message..." onKeyUp={chatInputHandler} />
-            </div>
+
         </div>
     )
 

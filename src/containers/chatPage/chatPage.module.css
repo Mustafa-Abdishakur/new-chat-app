@@ -1,21 +1,30 @@
 .HomeContainer{
-    width:60vw;
+    width:95vw;
     height: 90vh;
     margin:auto;
+    display:flex;
+    padding-top:70px;
 }
 .midContainer {
     display:flex;
     flex-direction: column;
     align-items: center;
+    width:50%;
+    border:1px solid #eee;
+   
+}
+.headerContainer {
+    background-color: rgb(243, 243, 243);
     width:100%;
-    height:97%;
-    padding-top:70px;
+    text-align: center;
+
 }
 .ChatContainer {
     width:100%;
 }
 .mainChatContainer {
     width:100%;
+    height:100%;
     overflow-y: auto;
     padding-top:20px;
     behavior: 'smooth';
@@ -51,12 +60,11 @@
     color:rgb(189, 8, 8);
 }
 .InputContainer {
-    position: absolute;
-    bottom:30px;
-    width:60%;
-    height:40px;
+    width:100%;
+    height:50px;
     display:flex;
     align-items: center;
+    position:sticky;
 }
 .InputContainer input {
     width:100%;
@@ -65,18 +73,7 @@
     font-size:18px;
     outline: none;
 }
-.SignOutBtn {
-    position: absolute;
-    top:20px;
-    right:40px;
-}
-.SignOutBtn button{
-    width:100px;
-    padding: 5px 0;
-    background-color: #fff;
-    font-size:18px;
-    border:2px solid black;
-}
+
 .SignOutBtn button:hover{
 background-color: rgb(189, 8, 8);
 color:white;
