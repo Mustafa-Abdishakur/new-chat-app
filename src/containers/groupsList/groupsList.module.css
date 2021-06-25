@@ -89,6 +89,7 @@
     "area3 area3 area3";
 }
 .groupInfoContainer span:nth-child(1) {
+    min-width:35px;
     grid-area: area1;
 }
 .groupInfoContainer span:nth-child(2) {

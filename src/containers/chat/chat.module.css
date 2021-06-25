@@ -1,0 +1,7 @@
+.HomeContainer{
+    width:95vw;
+    height: 90vh;
+    margin:auto;
+    display:flex;
+    padding-top:70px;
+}

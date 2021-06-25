@@ -61,14 +61,13 @@ const FirebaseInit = () => {
       localStorage.setItem('profileImg', user.photoURL === null ? profilePic : user.photoURL);
       localStorage.setItem('uid', user.uid);
 
-
       //redirect to chat page
       if (window.location.pathname === '/') {
-        window.location = '/chatPage';
+        window.location = '/chat';
       };
     } else {
       // No user is signed in so redirect to home page
-      if (window.location.pathname === '/chatPage') {
+      if (window.location.pathname === '/chat') {
         window.location = '/';
         localStorage.clear();
       };
