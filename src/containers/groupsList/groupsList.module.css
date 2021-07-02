@@ -9,12 +9,12 @@
 }
 .infoContainer img:first-child{
     border-radius: 50%;
-    width:50px;
+    width:40px;
     margin-right:10px;
 }
 .infoContainer {
-    display:grid;
-    grid-template-columns: repeat(3,1fr);
+    display:flex;
+    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eee;
     background-color: rgb(243, 243, 243);
@@ -23,9 +23,11 @@
 .infoContainer .dropdown img{
     width:30px;
 }
+.profileInfo {
+    display: flex;
+    align-items: center;
+}
 .infoContainer span {
-    justify-self: left;
-    margin-left:-14px;
     font-size:14px;
 }
 .dropdown {
@@ -59,15 +61,14 @@
 .infoContainer img:last-child:hover{
     cursor: pointer;
 }
-
-.group img{
-    width:50px;
-    margin-right:10px;
-}
 .group {
-    display:flex;
-    align-items: center;
-    padding: 19px 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) ;
+    grid-template-rows: repeat(2, 1fr) ;
+    grid-template-areas: 
+    "area1 . area2"
+    "area3 area3 area3";
+    padding: 25px 12px;
     border-bottom: 1px solid #eee;
 }
 .group:hover{
@@ -80,29 +81,21 @@
     cursor:pointer;
     color:#fff !important;
 }
-.groupInfoContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) ;
-    grid-template-rows: repeat(2, 1fr) ;
-    grid-template-areas: 
-    "area1 . area2"
-    "area3 area3 area3";
-}
-.groupInfoContainer span:nth-child(1) {
-    min-width:35px;
+.group span:nth-child(1) {
+    min-width:150px;
     grid-area: area1;
 }
-.groupInfoContainer span:nth-child(2) {
+.group span:nth-child(2) {
     text-align: end;
     grid-area: area2;
     color:grey;
 }
-.groupInfoContainer span:nth-child(3) {
+.group span:nth-child(3) {
     grid-area: area3;
     color:grey;
     font-size:14px;
     margin-top: 3px;
 }
-.groupInfoContainer{
+.group{
     width:100%;
 }

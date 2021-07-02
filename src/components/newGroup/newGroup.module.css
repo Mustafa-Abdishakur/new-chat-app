@@ -1,0 +1,31 @@
+.mainContainer {
+    border:1px solid grey;
+    width: 100%;
+    padding:10px 5px;
+}
+ form label {
+     font-size: 14px;
+ }
+.Input {
+    display:grid;
+    grid-template-columns: 25% 75%;
+    align-items: center;
+}
+.btnsContainer {
+    display:flex;
+    justify-content: space-between;
+    width:150px;
+    margin:auto;
+    margin-top:4px;
+    margin-right:5px;
+}
+form button, input[type='submit'] {
+    background-color: #fff;
+    border:1px solid black;
+    padding:4px 3px;
+}
+form button:hover, input[type='submit']:hover{
+    background-color: #3498db;
+    color:#fff;
+    cursor:pointer;
+}

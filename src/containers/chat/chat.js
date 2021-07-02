@@ -8,43 +8,50 @@ import 'firebase/database';
 const Chat = () => {
     const database = firebase.database();
 
-   /*  const [userName, setUserName] = useState(null);
-    const [userEmail, setUserEmail] = useState(null);
-    const [userImg, setUserImg] = useState(null);
-    const [userId, setUserId] = useState(null); */
     const [user, setUser] = useState({});
     const [messagesList, setMessagesList] = useState({});
-
+    const [lastMessage, setLastMessage] = useState({});
+    const [groups, setGroups] = useState({});
+    const [groupId, setGroupId] = useState('generalChat')
     useEffect(() => {
-      /*   setUserName(localStorage.getItem('name'));
-        setUserEmail(localStorage.getItem('email'));
-        setUserImg(localStorage.getItem('profileImg'));
-        setUserId(localStorage.getItem('uid')); */
         setUser({
             name: localStorage.getItem('name'),
             email: localStorage.getItem('email'),
             image: localStorage.getItem('profileImg'),
-            id: localStorage.getItem('uid')
+            id: localStorage.getItem('uid'),
+            memberOfGroup: {
+                generalChat: true
+            },
         });
     }, []);
-
+    //get group messages
     useEffect(() => {
-        let messagesRef = database.ref('General Chat');
+        let messagesRef = database.ref('group messages/' + groupId + '/messages');
         messagesRef.on('value', (snapshot) => {
-            setMessagesList(snapshot.val());
+            const messages = snapshot.val();
+            // const lastMessage = Object.keys(messages)[Object.keys(messages).length - 1];
+            // setLastMessage(messages[lastMessage]);
+            setMessagesList(messages);
         });
-    }, [database]);
+        // get groups info
+        let groupsRef = database.ref('users/' + user.id + '/groups');
+        groupsRef.on('value', (snapshot) => {
+            // console.log(snapshot.val())
+            setGroups(snapshot.val());
+        })
+    }, [database, groupId, user.id]);
 
     //add user or get user data 
     useEffect(() => {
         const database = firebase.database();
         database.ref().child("users").get().then((snapshot) => {
             if (snapshot.exists()) {
-                database.ref().child("users").child(user.id).get().then((snapshot) => {
+                const userInfo = database.ref().child("users").child(user.id);
+                userInfo.get().then((snapshot) => {
                     if (snapshot.exists()) {
                         // user already exists
-                        return;
                     } else {
+                        //add user to the database
                         let addUser = {};
                         addUser['users/' + user.id] = user;
                         return database.ref().update(addUser);
@@ -61,13 +68,16 @@ const Chat = () => {
             console.error(error);
         });
     }, [user]);
+
+    //chat input
     const chatInputHandler = event => {
         const message = event.target.value;
         if (event.keyCode === 13) {
-            const newPostKey = database.ref().child('General Chat').push().key;
+            const newPostKey = database.ref().child('group messages').child(groupId).child('messages').push().key;
             const date = new Date();
             const currentDate = date.getDate() + '/' + (date.getMonth() + 1);
             const currentTime = date.getHours() + ':' + date.getMinutes();
+
             const messageInfo = {
                 name: user.name,
                 message: message,
@@ -78,27 +88,56 @@ const Chat = () => {
                 messageTime: currentTime
             }
             let newMessage = {};
-            newMessage['General Chat/' + newPostKey] = messageInfo;
+            newMessage['group messages/' + groupId + '/messages/' + newPostKey] = messageInfo;
+            // newMessage['group messages/generalChat/lastMessage'] = lastMessage;
             database.ref().update(newMessage);
             event.target.value = '';
 
         }
     }
-    //messages retrieved from database
+    //get group's messages
+    const groupClickHandler = (group) => {
+        // console.log(group)
+        if (group.key) {
+            setGroupId(group.key);
+        } else {
+            setGroupId('generalChat');
+        }
+    }
+    //add new group
+    const addGroupHandler = (event, newGroup) => {
+        event.preventDefault();
+        // console.log(newGroup)
+        const newPostKey = database.ref().child('users').child(user.id).child('groups').push().key;
+        const newMessageKey = database.ref().child('group messages').child(newPostKey).child('messages').push().key;
+        let addGroup = {};
+        addGroup['users/' + user.id + '/groups/' + newPostKey] = {
+            name: newGroup,
+            admin: true,
+            key: newPostKey,
+        };
+        // addGroup['users/' + props.user.id + '/memberOfGroup/' + newPostKey] = { name: newGroup };
+        addGroup['group messages/' + newPostKey + '/messages/' + newMessageKey] = {
+            message: `'${newGroup}' group was created`,
+            key: newMessageKey,
+            profilePic: user.image,
+            name: user.name
+        };
+        setGroupId(newPostKey);
+        return database.ref().update(addGroup);
+    }
+    //turn the messages and groups into arrays 
     const messagesArr = [];
     for (const message in messagesList) {
         messagesArr.push(messagesList[message])
     }
-
-  /*   const userInfo = {
-        userName,
-        userEmail,
-        userImg,
-        userId,
-    } */
+    const groupsArr = [];
+    for (const group in groups) {
+        groupsArr.push(groups[group])
+    }
     return (
         <div className={classes.HomeContainer}>
-            <GroupsList user={user} />
+            <GroupsList user={user} /* generalChat={lastMessage} */ groups={groupsArr} groupClickHandler={groupClickHandler} addGroup={addGroupHandler} />
             <ChatMessages messagesArr={messagesArr} chatInputHandler={chatInputHandler} />
         </div>
     )
