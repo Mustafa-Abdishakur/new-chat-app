@@ -19,7 +19,7 @@ const GroupsList = (props) => {
     const [displaySettings, setDisplaySettings] = useState(false);
     const [displayNewGroup, setdisplayNewGroup] = useState(false);
     const [newGroup, setNewGroup] = useState('');
-
+    const [groupsArr, setGroupsArr] = useState([]);
     const settingsHandler = () => {
         if (displaySettings) {
             setDisplaySettings(false);
@@ -47,7 +47,10 @@ const GroupsList = (props) => {
     const inputHandler = (event) => {
         setNewGroup(event.target.value);
     }
-
+/* 
+    useEffect(() => {
+        setGroupsArr(props.groups);
+    }, [props.groups]) */
     return (
         <div className={classes.mainContainer} >
             <div className={classes.infoContainer}>
@@ -72,15 +75,13 @@ const GroupsList = (props) => {
                 </div>
                 {
                     props.groups.map(group => {
-                        // console.log(group)
-                        return (
-                            <div className={classes.group} onClick={()=> props.groupClickHandler(group)} key={group.key}>
-                                <span>{group.name}</span>
-                                <span>{group.messageTime ? group.messageTime : '--'}</span>
-                                <span>{group.message ? group.message : '--'}</span>
-                            </div>
-                        )
-                    })
+                        return <div className={classes.group} onClick={() => props.groupClickHandler(group)} key={group.key}>
+                            <span>{group.name ? group.name : '--'}</span>
+                            <span>{group.lastMessage.messageTime ? group.lastMessage.messageTime : '--'}</span>
+                            <span>{group.lastMessage.message ? group.lastMessage.message : '--'}</span>
+                        </div>
+                    }
+                    )
                 }
                 {/*  <div className={classes.group}>
                         <span>Group name</span>
