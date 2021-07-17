@@ -19,7 +19,7 @@ const GroupsList = (props) => {
     const [displaySettings, setDisplaySettings] = useState(false);
     const [displayNewGroup, setdisplayNewGroup] = useState(false);
     const [newGroup, setNewGroup] = useState('');
-    const [groupsArr, setGroupsArr] = useState([]);
+    const [update, setUpdate] = useState(0);
     const settingsHandler = () => {
         if (displaySettings) {
             setDisplaySettings(false);
@@ -47,10 +47,13 @@ const GroupsList = (props) => {
     const inputHandler = (event) => {
         setNewGroup(event.target.value);
     }
-/* 
+
+    //render the groups list
     useEffect(() => {
-        setGroupsArr(props.groups);
-    }, [props.groups]) */
+        setTimeout(() => {
+            setUpdate(update + 1)
+        },3500)
+    },[])
     return (
         <div className={classes.mainContainer} >
             <div className={classes.infoContainer}>
