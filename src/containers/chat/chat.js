@@ -171,7 +171,6 @@ const Chat = () => {
         }
  
       
-    console.log(groupInfo)
 
     return (
         <div className={classes.HomeContainer}>
