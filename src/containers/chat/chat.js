@@ -14,7 +14,9 @@ const Chat = () => {
     const [groups, setGroups] = useState({});
     const [groupId, setGroupId] = useState('generalChat');
     const [groupInfo, setGroupInfo] = useState({});
-    // const [groupsArr, setGroupsArr] = useState([]);
+    const [groupMembers, setGroupMembers] = useState({});
+    const [listOfUsers, setListOfUsers] = useState([])
+    //set user info and list of users of the app
     useEffect(() => {
         setUser({
             name: localStorage.getItem('name'),
@@ -25,6 +27,7 @@ const Chat = () => {
                 generalChat: true
             },
         });
+
     }, []);
     //get group info
     useEffect(() => {
@@ -33,7 +36,17 @@ const Chat = () => {
             const groupInfo = snapshot.val();
             // setLastMessage(groupInfo.lastMessage);
             // setMessagesList(groupInfo.messages);
-            setGroupInfo(groupInfo)
+            setGroupInfo({
+                messages: {
+                    ...groupInfo.messages
+                },
+                lastMessage: {
+                    ...groupInfo.lastMessage
+                },
+                groupName: groupInfo.groupName
+
+            })
+            setGroupMembers(groupInfo.members)
         });
         // get groups info
         let groupsRef = database.ref('users/' + user.id + '/groups');
@@ -43,7 +56,7 @@ const Chat = () => {
         })
     }, [database, groupId, user.id]);
 
-    //add user or get user data 
+    // add/get user data and list of app users 
     useEffect(() => {
         const database = firebase.database();
         database.ref().child("users").get().then((snapshot) => {
@@ -69,8 +82,55 @@ const Chat = () => {
         }).catch((error) => {
             console.error(error);
         });
+        //get list of users of the app / add user to the list
+        let usersRef = database.ref().child('listOfUsers');
+        usersRef.get().then((snapshot) => {
+            if (snapshot.exists()) {
+                const listOfUsers = snapshot.val();
+                try {
+                    const userRef = usersRef.child(user.id);
+                    userRef.get().then((snapshot) => {
+                        if (snapshot.exists()) {
+                            arrOfUsers(listOfUsers);
+                        } else {
+                            let addUser = {};
+                            const newUser = {
+                                name: user.name,
+                                image: user.image,
+                                id: user.id
+                            };
+                            arrOfUsers({
+                                ...listOfUsers,
+                                newUser
+                            })
+                            addUser['listOfUsers/' + user.id] = newUser;
+                            return database.ref().update(addUser);
+                        }
+                    })
+                } catch (err) {
+                    // console.log(err);
+                }
+            } else {
+                let addUser = {};
+                const newUser = {
+                    name: user.name,
+                    image: user.image,
+                    id: user.id
+                };
+                arrOfUsers(newUser);
+                addUser['listOfUsers/' + user.id] = newUser;
+                return database.ref().update(addUser);
+            }
+        })
     }, [user]);
 
+    const arrOfUsers = (users) => {
+        const listOfUsers = [];
+        for (const user in users) {
+            listOfUsers.push(users[user]);
+        }
+        setListOfUsers(listOfUsers);
+    }
     //chat input
     const chatInputHandler = event => {
         const message = event.target.value;
@@ -142,7 +202,7 @@ const Chat = () => {
         };
 
         addGroup['group messages/' + newPostKey + '/members/' + user.id] = {
-            name:user.name,
+            name: user.name,
             image: user.image,
             id: user.id,
             admin: true
@@ -157,26 +217,52 @@ const Chat = () => {
         messagesArr.push(groupInfo.messages[message])
     }
     //turn groups into an array 
-        const groupsArr = [];
-        for (const groupKey in groups) {
-            let groupInfo = groups[groupKey];
-            let lastMessage = '';
-            let lastMessageRef = database.ref('group messages/' + groupKey + '/lastMessage');
-            lastMessageRef.on('value', (snapshot) => {
-                // console.log(snapshot.val())
-                lastMessage = snapshot.val();
-                groupInfo.lastMessage = lastMessage;
-                groupsArr.push(groupInfo);
-            })
+    const groupsArr = [];
+    for (const groupKey in groups) {
+        let groupInfo = groups[groupKey];
+        let lastMessage = '';
+        let lastMessageRef = database.ref('group messages/' + groupKey + '/lastMessage');
+        lastMessageRef.on('value', (snapshot) => {
+            // console.log(snapshot.val())
+            lastMessage = snapshot.val();
+            groupInfo.lastMessage = lastMessage;
+            groupsArr.push(groupInfo);
+        })
+    }
+    //add member to the current group
+    const addToGroupHandler = (groupId, user) => {
+        //update groupInfo
+        const membersArr = [];
+        //loop through group members 
+
+            //check if admin
+            // console.log(user)
+            if (groupMembers.hasOwnProperty(user.id)) {
+                if (groupMembers[user.id].hasOwnProperty('admin')) {
+                    if (groupMembers[user.id].admin === true) {
+                        alert('you are the admin of the group');
+                        return;
+                    }
+                } else {
+                    alert('user already exits in the group');
+                    return;
+                }
+
+            } else {
+                //check if clicked member is already in the group (skip if he already is or add if he isn't) 
+                let addMember = {};
+                addMember['group messages/' + groupId + '/members/' + user.id] = user;
+                return database.ref().update(addMember);
+
         }
- 
-      
+
+    }
 
     return (
         <div className={classes.HomeContainer}>
             <GroupsList user={user} lastMessage={groupInfo.lastMessage} groups={groupsArr} groupClickHandler={groupClickHandler} addGroup={addGroupHandler} />
             <ChatMessages messagesArr={messagesArr} chatInputHandler={chatInputHandler} />
-            <GroupInfo groupName={groupInfo.groupName} members={groupInfo.members}/>
+            <GroupInfo groupName={groupInfo.groupName} members={groupMembers} listOfUsers={listOfUsers} groupId={groupId} addToGroup={addToGroupHandler} />
         </div>
     )
 }
