@@ -7,7 +7,7 @@ const newGroup = (props) => {
             <form onSubmit={props.submit}>
                 <div className={classes.Input}>
                     <label>Group Name:</label>
-                    <input type="text" onChange={props.input}/>
+                    <input type="text" maxLength = "20" onChange={props.input}/>
                 </div>
                 <div className={classes.btnsContainer}>
                     <button onClick={props.cancel}>Cancel</button>

@@ -14,7 +14,6 @@ const signOut = () => {
     });
 }
 const GroupsList = (props) => {
-    const database = firebase.database();
 
     const [displaySettings, setDisplaySettings] = useState(false);
     const [displayNewGroup, setdisplayNewGroup] = useState(false);
@@ -53,7 +52,7 @@ const GroupsList = (props) => {
         setTimeout(() => {
             setUpdate(update + 1)
         },3500)
-    },[])
+    },[update])
     return (
         <div className={classes.mainContainer} >
             <div className={classes.infoContainer}>
@@ -64,7 +63,6 @@ const GroupsList = (props) => {
                 <div className={classes.dropdown} onClick={settingsHandler}>
                     <img src={settings} alt='' />
                     <div className={displaySettings ? [classes.dropdownContent, classes.viewSettings].join(' ') : classes.dropdownContent}>
-                        <p>Edit profile</p>
                         <p onClick={viewGroupHandler}>Create group</p>
                         <p onClick={signOut}>Sign out</p>
                     </div>
@@ -73,8 +71,8 @@ const GroupsList = (props) => {
             <div className={classes.groupsContainer}>
                 <div className={classes.group} onClick={props.groupClickHandler}>
                     <span>General chat</span>
-                    <span>{/* {props.generalChat.messageTime} */}--</span>
-                    <span>{/* {props.generalChat.message} */} --</span>
+                    <span>{props.groupName === 'General Chat' ? props.lastMessage.messageTime : '--'}</span>
+                    <span>{props.groupName === 'General Chat' ? props.lastMessage.message : '--'}</span>
                 </div>
                 {
                     props.groups.map(group => {
@@ -86,13 +84,6 @@ const GroupsList = (props) => {
                     }
                     )
                 }
-                {/*  <div className={classes.group}>
-                        <span>Group name</span>
-                        <span>00:00</span>
-                        <span>Last text</span>
-                </div> */}
-
-                {/*new group component */}
                 {displayNewGroup ? <NewGroup cancel={() => setdisplayNewGroup(false)} submit={addGroupHandler} input={inputHandler} /> : null}
             </div>
         </div>

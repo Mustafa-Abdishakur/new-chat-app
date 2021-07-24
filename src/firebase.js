@@ -14,7 +14,6 @@ const firebaseConfig = {
 };
 var firebaseui = require('firebaseui');
 let ui;
-/*let  database; */
 
 //authetication configration
 var uiConfig = {
@@ -52,9 +51,7 @@ const FirebaseInit = () => {
   //check if user is signed in or not
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // console.log(user)
       // User is signed in.
-      //Note: change back displayName and photoURL and remove email log in production
       //save message to local storage to used in chatPage.js
       localStorage.setItem('name', user.displayName === null ? 'Test' : user.displayName);
       localStorage.setItem('email', user.email);
@@ -73,7 +70,6 @@ const FirebaseInit = () => {
       };
     }
   });
-  // console.log(currentUser)
 }
 
-export { FirebaseInit, uiConfig, /* currentUser */ };
+export { FirebaseInit, uiConfig };

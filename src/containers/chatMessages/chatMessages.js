@@ -12,7 +12,7 @@ const ChatMessages = (props) => {
     return (
             <div className={classes.midContainer}>
                 <div className={classes.headerContainer}>
-                    <h1>Welcome to chat App</h1>
+                    <h1>{props.groupName}</h1>
                 </div>
                 <div className={classes.mainChatContainer}>
                     {props.messagesArr.map(message => {

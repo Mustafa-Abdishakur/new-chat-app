@@ -9,12 +9,9 @@ const Chat = () => {
     const database = firebase.database();
 
     const [user, setUser] = useState({});
-    // const [messagesList, setMessagesList] = useState({});
-    // const [lastMessage, setLastMessage] = useState({});
     const [groups, setGroups] = useState({});
     const [groupId, setGroupId] = useState('generalChat');
     const [groupInfo, setGroupInfo] = useState({});
-    const [groupMembers, setGroupMembers] = useState({});
     const [listOfUsers, setListOfUsers] = useState([])
     //set user info and list of users of the app
     useEffect(() => {
@@ -34,24 +31,11 @@ const Chat = () => {
         let messagesRef = database.ref('group messages/' + groupId);
         messagesRef.on('value', (snapshot) => {
             const groupInfo = snapshot.val();
-            // setLastMessage(groupInfo.lastMessage);
-            // setMessagesList(groupInfo.messages);
-            setGroupInfo({
-                messages: {
-                    ...groupInfo.messages
-                },
-                lastMessage: {
-                    ...groupInfo.lastMessage
-                },
-                groupName: groupInfo.groupName
-
-            })
-            setGroupMembers(groupInfo.members)
+            setGroupInfo(groupInfo)
         });
         // get groups info
         let groupsRef = database.ref('users/' + user.id + '/groups');
         groupsRef.on('value', (snapshot) => {
-            // console.log(snapshot.val())
             setGroups(snapshot.val());
         })
     }, [database, groupId, user.id]);
@@ -108,7 +92,7 @@ const Chat = () => {
                         }
                     })
                 } catch (err) {
-                    // console.log(err);
+                    console.log(err);
                 }
             } else {
                 let addUser = {};
@@ -160,7 +144,6 @@ const Chat = () => {
     }
     //get group's messages
     const groupClickHandler = (group) => {
-        // console.log(group)
         if (group.key) {
             setGroupId(group.key);
         } else {
@@ -170,16 +153,14 @@ const Chat = () => {
     //add new group
     const addGroupHandler = (event, newGroup) => {
         event.preventDefault();
-        // console.log(newGroup)
-        const newPostKey = database.ref().child('users').child(user.id).child('groups').push().key;
-        const newMessageKey = database.ref().child('group messages').child(newPostKey).child('messages').push().key;
+        const newGroupKey = database.ref().child('users').child(user.id).child('groups').push().key;
+        const newMessageKey = database.ref().child('group messages').child(newGroupKey).child('messages').push().key;
         let addGroup = {};
-        addGroup['users/' + user.id + '/groups/' + newPostKey] = {
+        addGroup['users/' + user.id + '/groups/' + newGroupKey] = {
             name: newGroup,
             admin: true,
-            key: newPostKey,
+            key: newGroupKey,
         };
-        // addGroup['users/' + props.user.id + '/memberOfGroup/' + newPostKey] = { name: newGroup };
         const date = new Date();
         const currentDate = date.getDate() + '/' + (date.getMonth() + 1);
         const currentTime = date.getHours() + ':' + date.getMinutes();
@@ -188,27 +169,27 @@ const Chat = () => {
             message: `'${newGroup}' group was created`,
             profilePic: user.image,
             userId: user.id,
-            key: newPostKey,
+            key: newMessageKey,
             messageDate: currentDate,
             messageTime: currentTime
         }
-        addGroup['group messages/' + newPostKey + '/lastMessage'] = messageInfo;
+        addGroup['group messages/' + newGroupKey + '/lastMessage'] = messageInfo;
 
-        addGroup['group messages/' + newPostKey + '/messages/' + newMessageKey] = {
+        addGroup['group messages/' + newGroupKey + '/messages/' + newMessageKey] = {
             message: `'${newGroup}' group was created`,
             key: newMessageKey,
             profilePic: user.image,
             name: user.name
         };
 
-        addGroup['group messages/' + newPostKey + '/members/' + user.id] = {
+        addGroup['group messages/' + newGroupKey + '/members/' + user.id] = {
             name: user.name,
             image: user.image,
             id: user.id,
             admin: true
         };
-        addGroup['group messages/' + newPostKey + '/groupName'] = newGroup;
-        setGroupId(newPostKey);
+        addGroup['group messages/' + newGroupKey + '/groupName'] = newGroup;
+        setGroupId(newGroupKey);
         return database.ref().update(addGroup);
     }
     //turn the messages into an array 
@@ -223,7 +204,6 @@ const Chat = () => {
         let lastMessage = '';
         let lastMessageRef = database.ref('group messages/' + groupKey + '/lastMessage');
         lastMessageRef.on('value', (snapshot) => {
-            // console.log(snapshot.val())
             lastMessage = snapshot.val();
             groupInfo.lastMessage = lastMessage;
             groupsArr.push(groupInfo);
@@ -231,38 +211,39 @@ const Chat = () => {
     }
     //add member to the current group
     const addToGroupHandler = (groupId, user) => {
-        //update groupInfo
-        const membersArr = [];
-        //loop through group members 
-
-            //check if admin
-            // console.log(user)
-            if (groupMembers.hasOwnProperty(user.id)) {
-                if (groupMembers[user.id].hasOwnProperty('admin')) {
-                    if (groupMembers[user.id].admin === true) {
-                        alert('you are the admin of the group');
+            if (groupInfo.members.hasOwnProperty(user.id)) {
+                if (groupInfo.members[user.id].hasOwnProperty('admin')) {
+                    if (groupInfo.members[user.id].admin === true) {
+                        alert('This is the admin of the group');
                         return;
                     }
                 } else {
-                    alert('user already exits in the group');
+                    alert('user already exists in the group');
                     return;
                 }
 
             } else {
-                //check if clicked member is already in the group (skip if he already is or add if he isn't) 
                 let addMember = {};
                 addMember['group messages/' + groupId + '/members/' + user.id] = user;
+                addMember['users/' + user.id + '/groups/' + groupId] = {
+                    name: groupInfo.groupName, 
+                    key: groupId,
+                    admin: false
+                };
                 return database.ref().update(addMember);
 
         }
 
     }
-
+    const reset = () => {
+        setGroupInfo({});
+        setGroupId('generalChat');
+    }
     return (
         <div className={classes.HomeContainer}>
             <GroupsList user={user} lastMessage={groupInfo.lastMessage} groups={groupsArr} groupClickHandler={groupClickHandler} addGroup={addGroupHandler} />
-            <ChatMessages messagesArr={messagesArr} chatInputHandler={chatInputHandler} />
-            <GroupInfo groupName={groupInfo.groupName} members={groupMembers} listOfUsers={listOfUsers} groupId={groupId} addToGroup={addToGroupHandler} />
+            <ChatMessages messagesArr={messagesArr} chatInputHandler={chatInputHandler} groupName={groupInfo.groupName} />
+            <GroupInfo groupName={groupInfo.groupName} members={groupInfo.members} listOfUsers={listOfUsers} groupId={groupId} addToGroup={addToGroupHandler} userId={user.id} reset={reset}/>
         </div>
     )
 }

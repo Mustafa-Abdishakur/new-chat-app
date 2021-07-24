@@ -37,10 +37,18 @@
     position: relative;
     padding-bottom:3px;
 }
-.member img{
+.member img:first-child{
 width:35px;
 margin-right:10px;
 border-radius: 50%;
+}
+.member .close{
+width:17px;
+position: absolute;
+right:15px;   
+}
+.member .close:hover{
+    cursor: pointer;
 }
 .dropdownContent {
     display: none;
@@ -76,4 +84,7 @@ border-radius: 50%;
     position: absolute;
     right:15px;   
     
+ }
+ .listOfMembers {
+     overflow-y: scroll;
  }

@@ -16,8 +16,13 @@
 .headerContainer {
     background-color: rgb(243, 243, 243);
     width:100%;
-    text-align: center;
-
+    padding-left:20px;
+}
+.headerContainer h1 {
+    color:#3498db;
+    font-style: italic;
+    font-weight: normal;
+    font-size:20px;
 }
 .ChatContainer {
     width:100%;

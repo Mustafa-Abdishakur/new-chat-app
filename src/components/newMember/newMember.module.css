@@ -35,8 +35,6 @@ justify-content:space-between;
     padding-left:5px;
     border:1px solid #eee;
     width:90%;
-    overflow-y: scroll;
-    max-height: 60%;
 }
 .member {
     display:flex;

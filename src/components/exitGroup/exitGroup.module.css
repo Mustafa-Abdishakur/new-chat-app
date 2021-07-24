@@ -1,0 +1,38 @@
+.mainContainer {
+    width:20vw;
+    height:fit-content;
+    position: absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    margin:auto;
+    background-color: #fff;
+    border:3px solid #3498db;
+    padding:10px 10px;
+}
+.mainContainer p{
+    font-style: italic;
+    text-align: center;
+    font-size:1.05em;
+    margin:0;
+    margin-top:10px;
+}
+button {
+    background-color: #fff;
+    border: 2px solid #3498db;
+    margin-right:5px;
+    font-size:1em;
+}
+button:hover {
+    background-color:#3498db;
+    color:#fff;
+}
+
+.btns {
+    text-align: center;
+}
+.mainContainer span {
+    font-size: 0.8em;
+    font-style:italic;
+}

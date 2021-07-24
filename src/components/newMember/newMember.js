@@ -1,7 +1,6 @@
 import classes from './newMember.module.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import closeImg from '../../img/close.png';
-import testImg from '../../img/blank-profile.png';
 
 const NewMember = (props) => {
     const [displayList, setDisplayList] = useState(false);
@@ -13,7 +12,6 @@ const NewMember = (props) => {
     }
     const searchHandler = (event) => {
         const value = event.target.value;
-        console.log(value)
         const filteredUsers = props.listOfUsers.filter(user => user.name.toLowerCase().includes(value));
         if(filteredUsers.length === 0) {
         setListOfUsers([]);
