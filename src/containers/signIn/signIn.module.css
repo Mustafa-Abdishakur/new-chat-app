@@ -1,5 +1,5 @@
 .signIn {
-    width:40vw;
+    width:30vw;
     min-height:30vh;
     border:1px solid #eee;
     display:flex;
@@ -10,11 +10,13 @@
     transform:translateY(25vh);
     box-shadow: 0 0 10px rgb(211, 210, 210);
     padding:20px;
+    min-width: 500px;
 }
 .signIn h1{
     font-weight: normal;
     margin-bottom:-5px;
     color:rgb(189, 8, 8);
+    font-size:1.5em;
 }
 .signIn button {
     background-color: #fff;
