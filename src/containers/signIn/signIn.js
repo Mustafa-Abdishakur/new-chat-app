@@ -7,7 +7,7 @@ import { uiConfig } from '../../firebase';
 const signIn = () => {
     return (
         <div className={classes.signIn}>
-            <h1>Welcome to my chat app</h1>
+            <h1>Welcome to the desktop chat app</h1>
             <p>Join and chat away with the rest of the world</p>
             <div id="firebaseui-auth-container"></div>
             <div id="loader">Loading...</div>

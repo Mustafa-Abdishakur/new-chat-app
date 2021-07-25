@@ -12,7 +12,7 @@ const ChatMessages = (props) => {
     return (
             <div className={classes.midContainer}>
                 <div className={classes.headerContainer}>
-                    <h1>{props.groupName}</h1>
+                    {/* <h1>{props.groupName}</h1> */}
                 </div>
                 <div className={classes.mainChatContainer}>
                     {props.messagesArr.map(message => {
@@ -37,7 +37,7 @@ const ChatMessages = (props) => {
                     <div ref={messagesEndRef} />
                 </div>
                 <div className={classes.InputContainer}>
-                    <input type="text" placeholder="type your message here..." onKeyUp={props.chatInputHandler} />
+                    <input type="text" placeholder="type your message here..." onKeyUp={props.chatInputHandler} maxLength = "70" />
                 </div>
             </div>
     )
