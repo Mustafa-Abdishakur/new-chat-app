@@ -2,7 +2,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/database';
 import profilePic from './img/blank-profile.png';
-
 const firebaseConfig = {
   apiKey: "AIzaSyAeNMxcJMDLX9MqsYJNx_uTe6awE0kO7gw",
   authDomain: "chat-application-65ba3.firebaseapp.com",
@@ -58,18 +57,19 @@ const FirebaseInit = () => {
       localStorage.setItem('profileImg', user.photoURL === null ? profilePic : user.photoURL);
       localStorage.setItem('uid', user.uid);
 
-      //redirect to chat page
+    /*   //redirect to chat page
       if (window.location.pathname === '/') {
-        window.location = '/chat';
+        this.props.history.push('/chat');
       };
     } else {
       // No user is signed in so redirect to home page
       if (window.location.pathname === '/chat') {
-        window.location = '/';
+        this.props.history.push('/');
         localStorage.clear();
-      };
+      }; */
     }
   });
 }
+// const firebaseWithRouter = withRouter(FirebaseInit);
 
 export { FirebaseInit, uiConfig };
