@@ -57,16 +57,16 @@ const FirebaseInit = () => {
       localStorage.setItem('profileImg', user.photoURL === null ? profilePic : user.photoURL);
       localStorage.setItem('uid', user.uid);
 
-    /*   //redirect to chat page
+      //redirect to chat page
       if (window.location.pathname === '/') {
-        this.props.history.push('/chat');
+        window.location = '/chat';
       };
     } else {
       // No user is signed in so redirect to home page
       if (window.location.pathname === '/chat') {
-        this.props.history.push('/');
+        window.location = '/';
         localStorage.clear();
-      }; */
+      };
     }
   });
 }
