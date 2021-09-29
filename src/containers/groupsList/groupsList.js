@@ -53,6 +53,7 @@ const GroupsList = (props) => {
             setUpdate(update + 1)
         },3500)
     },[update])
+
     return (
         <div className={classes.mainContainer} >
             <div className={classes.infoContainer}>
@@ -76,6 +77,7 @@ const GroupsList = (props) => {
                 </div>
                 {
                     props.groups.map(group => {
+
                         return <div className={classes.group} onClick={() => props.groupClickHandler(group)} key={group.key}>
                             <span>{group.name ? group.name : '--'}</span>
                             <span>{group.lastMessage.messageTime ? group.lastMessage.messageTime : '--'}</span>
@@ -87,7 +89,6 @@ const GroupsList = (props) => {
                 {displayNewGroup ? <NewGroup cancel={() => setdisplayNewGroup(false)} submit={addGroupHandler} input={inputHandler} /> : null}
             </div>
         </div>
-
     )
 }
 

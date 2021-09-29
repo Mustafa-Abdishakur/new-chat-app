@@ -30,8 +30,11 @@ const Chat = () => {
     useEffect(() => {
         let messagesRef = database.ref('group messages/' + groupId);
         messagesRef.on('value', (snapshot) => {
-            const groupInfo = snapshot.val();
-            setGroupInfo(groupInfo)
+            let groupInfo = snapshot.val();
+            if (groupInfo === null) { 
+                groupInfo = {};
+            }
+            setGroupInfo(groupInfo);
         });
         // get groups info
         let groupsRef = database.ref('users/' + user.id + '/groups');
