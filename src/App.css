@@ -2,6 +2,7 @@ body{
     margin:0;
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
+
 }
 * {
     box-sizing: border-box;
@@ -13,25 +14,39 @@ body{
    margin:auto;
 
 }
-.reference {
-    position:absolute;
-    float: right;
-    bottom:10px;
-    right:10px;
+.refContainer {
+    padding-right:1%;
+    margin-top:5px;
+    display:flex;
+    justify-content: flex-end;
     font-size:12px;
+    overflow-x: hidden;
+
+}
+.reference {
 }
 @media (max-width: 850px) {
 .App {
     width:90vw;
 }
 }
+
 @media (max-width: 730px) {
     .App {
         width:95vw;
     }
     }
-@media (max-width: 700px) {
-.reference {
-    right:-120px;
+    @media (max-width: 700px) {
+        .refContainer {
+            width:103vw;
+        }
+        }
+@media (max-width: 660px) {
+.refContainer {
+    width:109vw;
 }
 }
+@media (max-width: 590px) {
+    .reference {
+    }
+    }
