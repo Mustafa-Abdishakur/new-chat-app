@@ -1,10 +1,4 @@
-/* .HomeContainer{
-    width:95vw;
-    height: 90vh;
-    margin:auto;
-    display:flex;
-    padding-top:70px;
-} */
+
 .midContainer {
     display:flex;
     flex-direction: column;
@@ -12,6 +6,7 @@
     width:50%;
     border:1px solid #eee;
     min-width: 260px;
+    padding-bottom:5px;
 }
 .headerContainer {
     background-color: #eee;

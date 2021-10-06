@@ -8,11 +8,12 @@ body{
     box-sizing: border-box;
 }
 .App {
-    padding:0;
    width:75vw;
    height: 90vh;
    margin:auto;
-
+   background-color: #fff;
+   margin-top:15px;
+   border-radius: 2%;
 }
 .refContainer {
     padding-right:1%;
